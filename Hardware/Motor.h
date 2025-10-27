@@ -3,6 +3,7 @@
 
 void Motor_Init(void);
 void Motor_Setspeed(int8_t Speed);
- int16_t Motor_Get(void);
+ int16_t Motor1_Get(void);
+ int16_t Motor2_Get(void);
 
 #endif

@@ -1,6 +1,5 @@
 #include "stm32f10x.h"                  // Device header
 #include "OLED.h"
-#include "Encoder.h"
 #include "Delay.h"
 #include "Motor.h"
 #include "Serial.h"
@@ -18,7 +17,6 @@ int main(void)
 	OLED_Init();
 	Key_Init();
 	Motor_Init();
-	Encoder_Init();
 	Serial_Init();
 	
 	
@@ -70,13 +68,9 @@ void TIM2_IRQHandler(void){
 	{
 		if (State == 0)
 				Target = Speed;
-		else if (State == 1)
-		{
-				Target = Encoder_Get();
-		}
 		
 		
-		Actual = Motor_Get();
+		Actual = Motor2_Get();
 		
 		
 		err1=err0;
@@ -95,9 +89,9 @@ void TIM2_IRQHandler(void){
 		else if (err1 == err0 && State == 1) Out*=2.2;
 
 		Motor_Setspeed(Out);
-		
-		
-		printf("%f,%f,%f,%d\n",Actual,Out,Target,Encoder_Get());
+
+		printf("%f,%f,%f\n",Actual,Out,Target);
+
 		TIM_ClearITPendingBit(TIM2 , TIM_IT_Update);
 	}
 }
