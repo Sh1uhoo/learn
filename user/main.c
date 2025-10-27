@@ -5,7 +5,7 @@
 #include "Serial.h"
 #include "Key.h"
 
-float Target,Actual,Out;
+float Target,Actual1,Actual2,Actual,Out;
 float kp[2]={0.3,0.075},ki[2]={0.1,0.01},kd[2]={0.05,0.001};
 float err0,err1,errint;
 uint8_t State=0;
@@ -70,7 +70,9 @@ void TIM2_IRQHandler(void){
 				Target = Speed;
 		
 		
-		Actual = Motor2_Get();
+		Actual2 = Motor2_Get();
+		Actual1 = Motor1_Get();
+		Actual = (Actual1 + Actual2)/2.0;
 		
 		
 		err1=err0;
@@ -90,7 +92,7 @@ void TIM2_IRQHandler(void){
 
 		Motor_Setspeed(Out);
 
-		printf("%f,%f,%f\n",Actual,Out,Target);
+		printf("%f,%f,%f,%f,%f\n",Actual1,Actual2,Actual,Out,Target);
 
 		TIM_ClearITPendingBit(TIM2 , TIM_IT_Update);
 	}
