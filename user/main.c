@@ -70,7 +70,7 @@ void TIM2_IRQHandler(void){
 				Target = Speed;
 		
 		
-		Actual = Motor1_Get();
+		Actual = Motor2_Get();
 		
 		
 		err1=err0;
@@ -89,9 +89,9 @@ void TIM2_IRQHandler(void){
 		else if (err1 == err0 && State == 1) Out*=2.2;
 
 		Motor_Setspeed(Out);
-		
-		printf("%d\n",Motor2_Get());
-		//printf("%f,%f,%f\n",Actual,Out,Target);
+
+		printf("%f,%f,%f\n",Actual,Out,Target);
+
 		TIM_ClearITPendingBit(TIM2 , TIM_IT_Update);
 	}
 }
