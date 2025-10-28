@@ -8,7 +8,7 @@ void PWM_Init(){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO,ENABLE);
 	
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_1 | GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA,&GPIO_InitStructure);
 	
@@ -42,12 +42,17 @@ void PWM_Init(){
 	TIM_OCInitStructure.TIM_Pulse = 50;
 	
 	TIM_OC2Init(TIM2,&TIM_OCInitStructure);
+	TIM_OC3Init(TIM2,&TIM_OCInitStructure);
 	
 	TIM_Cmd(TIM2,ENABLE);
 	
 }
 
-void PWM_SetCompare1(uint16_t Compare)
+void PWM_SetCompare(uint16_t Compare,uint8_t MotorNum)
 {
-	TIM_SetCompare2(TIM2,Compare);
+	if(MotorNum == 0)
+		TIM_SetCompare2(TIM2,Compare);
+	else if(MotorNum == 1)
+		TIM_SetCompare3(TIM2,Compare);
 }
+

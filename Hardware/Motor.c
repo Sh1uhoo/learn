@@ -64,18 +64,18 @@ extern uint8_t State;
 	TIM_Cmd(TIM4, ENABLE);
  }
  
- void Motor_Setspeed(int8_t Speed){
+ void Motor_Setspeed(int8_t Speed,uint8_t MotorNum){
 	 if (Speed>=0)
 	 {
 		 GPIO_SetBits(GPIOA,GPIO_Pin_4);
 		 GPIO_ResetBits(GPIOA,GPIO_Pin_5);
-		 PWM_SetCompare1(Speed);
+		 PWM_SetCompare(Speed,MotorNum);
 	 }
 	 else
 	 {
 		  GPIO_SetBits(GPIOA,GPIO_Pin_5);
 		 GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-		 PWM_SetCompare1(-Speed);
+		 PWM_SetCompare(-Speed,MotorNum);
 	 }
  }
  

@@ -3,6 +3,6 @@
 
 
 void PWM_Init(void);
-void PWM_SetCompare1(uint16_t Compare);
+void PWM_SetCompare(uint16_t Compare,uint8_t MotorNum);
 
 #endif
