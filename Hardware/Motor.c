@@ -7,11 +7,21 @@ extern uint8_t State;
  void Motor_Init(void)
  {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_4 | GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA,&GPIO_InitStructure);
+    GPIO_Init(GPIOA,&GPIO_InitStructure);
+	 
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_4 | GPIO_Pin_5;
+	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
 
 	 PWM_Init();
 	 
@@ -67,14 +77,30 @@ extern uint8_t State;
  void Motor_Setspeed(int8_t Speed,uint8_t MotorNum){
 	 if (Speed>=0)
 	 {
-		 GPIO_SetBits(GPIOA,GPIO_Pin_4);
-		 GPIO_ResetBits(GPIOA,GPIO_Pin_5);
+		 if (MotorNum == 0)
+		 {
+			GPIO_SetBits(GPIOA,GPIO_Pin_4);
+			GPIO_ResetBits(GPIOA,GPIO_Pin_5);
+		 }
+		 else if (MotorNum == 1)
+		 {
+			GPIO_SetBits(GPIOB,GPIO_Pin_4);
+			GPIO_ResetBits(GPIOB,GPIO_Pin_5);
+		 }
 		 PWM_SetCompare(Speed,MotorNum);
 	 }
 	 else
 	 {
-		  GPIO_SetBits(GPIOA,GPIO_Pin_5);
-		 GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+		if (MotorNum == 0)
+		 {
+			GPIO_SetBits(GPIOA,GPIO_Pin_5);
+			GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+		 }
+		 else if (MotorNum == 1)
+		 {
+			GPIO_SetBits(GPIOB,GPIO_Pin_5);
+			GPIO_ResetBits(GPIOB,GPIO_Pin_4);
+		 }
 		 PWM_SetCompare(-Speed,MotorNum);
 	 }
  }

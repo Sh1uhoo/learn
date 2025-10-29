@@ -86,7 +86,6 @@ void TIM2_IRQHandler(void){
 				Out[i] = 0;
 				errint[i] = 0;
 			}
-			else if (err1[i] == err0[i] && State == 1) Out[i] *= 2.2;
 
 			Motor_Setspeed(Out[i],i);
 		}
