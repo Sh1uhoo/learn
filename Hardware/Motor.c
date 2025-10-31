@@ -109,8 +109,7 @@ extern uint8_t State;
 {
 	int16_t Temp;
 	Temp = TIM_GetCounter(TIM3);
-	if (State == 0)
-		TIM_SetCounter(TIM3 , 0);
+	TIM_SetCounter(TIM3 , 0);
 	return Temp;
 }
 
@@ -118,7 +117,6 @@ int16_t Motor2_Get(void)
 {
 	int16_t Temp;
 	Temp = TIM_GetCounter(TIM4);
-	if (State == 0)
-		TIM_SetCounter(TIM4 , 0);
+	TIM_SetCounter(TIM4 , 0);
 	return Temp;
 }

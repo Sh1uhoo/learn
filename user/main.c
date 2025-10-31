@@ -6,9 +6,8 @@
 #include "Key.h"
 
 float Target,Actual[2],Out[2];
-float kp[2]={0.3,0.075},ki[2]={0.1,0.01},kd[2]={0.05,0.001};
+float kp=0.3,ki=0.1,kd=0.05;
 float err0[2],err1[2],errint[2];
-uint8_t State=0;
 static int8_t Speed=0;
 
 int main(void)
@@ -22,8 +21,7 @@ int main(void)
 	while(1)
 	{
 		
-		
-		State = Key_GetNum();
+
 			
 		if (Serial_GetRxFlag() == 1)
 		{
@@ -47,16 +45,10 @@ int main(void)
 			Speed*=k;
 			
 			
-			
-			
-			OLED_ShowSignedNum(1,4,Speed,3);
-			
 			Serial_RxFlag = 0;
 		}
 		
 		
-		
-		OLED_ShowSignedNum(2,4,State,3);
 		
 	}
 	
@@ -77,11 +69,11 @@ void TIM2_IRQHandler(void){
 			err0[i] = Target - Actual[i];
 			errint[i] += err0[i];
 
-			Out[i] = kp[State]*err0[i] + ki[State]*errint[i] + kd[State] * (err0[i]-err1[i]);
+			Out[i] = kp*err0[i] + ki*errint[i] + kd * (err0[i]-err1[i]);
 
 			if (Out[i] > 100 ) Out[i] = 100;
 			if (Out[i] < -100 ) Out[i] = -100;
-			if ((Actual[i] == 0 && Target == 0) || (Actual[i]-Target<=3 && Actual[i]-Target>=-3 && State == 1))
+			if (Actual[i] == 0 && Target == 0)
 			{
 				Out[i] = 0;
 				errint[i] = 0;
